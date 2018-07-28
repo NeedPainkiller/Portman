@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PortMan</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+          crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="forward-list">
+    <ul id="list">
+        <!--<li class="item">
+            <i class="fas fa-exchange-alt"></i>
+            <i class="fas fa-trash"></i>
+            <div>
+                <span class="listen-label">255.255.255.255 : 8080</span>
+                <br/>
+                <span class="connect-label">111.111.111.111 : 8080</span>
+            </div>
+        </li>
+        <li class="item">
+            <i class="fas fa-exchange-alt"></i>
+            <i class="fas fa-trash"></i>
+            <div>
+                <span class="listen-label">0.0.0.0 : 8080</span>
+                <br/>
+                <span class="connect-label">1.1.1.1 : 8080</span>
+            </div>
+        </li>-->
+    </ul>
+    <div id="loader">
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+    <rect x="0" y="0" width="4" height="20" fill="#1976D2">
+      <animate attributeName="opacity" attributeType="XML"
+        values="1; .2; 1"
+        begin="0s" dur="0.6s" repeatCount="indefinite" />
+    </rect>
+    <rect x="7" y="0" width="4" height="20" fill="#1976D2">
+      <animate attributeName="opacity" attributeType="XML"
+        values="1; .2; 1"
+        begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+    </rect>
+    <rect x="14" y="0" width="4" height="20" fill="#1976D2">
+      <animate attributeName="opacity" attributeType="XML"
+        values="1; .2; 1"
+        begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+    </rect>
+  </svg>
+    </div>
+    <div id="snackbar"><span id="snack-message"/></div>
+    <span id="none">There are no rules left</span>
+</div>
+<div id="forward-template">
+    <div class="forward-input">
+        <input type="text" id="listen-address" required>
+        <span class="bar"></span>
+        <label><i class="fas fa-globe"></i>&nbsp&nbspListen Address (Default : 0.0.0.0)</label>
+    </div>
+    <div class="forward-input">
+        <input type="number" id="listen-port" min="0" max="65535" required>
+        <span class="bar"></span>
+        <label><i class="fas fa-archway"></i> Listen Port</label>
+    </div>
+    <div class="forward-input">
+        <input type="text" id="connect-address" required>
+        <span class="bar"></span>
+        <label><i class="fas fa-map-marker-alt"></i>&nbsp&nbsp&nbspConnect Address (Default : 127.0.0.1)</label>
+    </div>
+    <div class="forward-input">
+        <input type="number" id="connect-port" min="0" max="65535" required>
+        <span class="bar"></span>
+        <label><i class="fas fa-anchor"></i> Connect Port </i></label>
+    </div>
+
+    <button id="add-btn"><i class="fas fa-shield-alt"></i> OPEN IT!</button>
+</div>
+<script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+</script>
+</body>
+</html>
