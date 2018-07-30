@@ -2,7 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const shell = require('child_process');
-const ipAddrRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+const Rx = require('./rx')
 
 function refresh() {
     cleanForwardList();
@@ -11,16 +11,44 @@ function refresh() {
         (data) => addForwardList(data),
         (err) => console.log('Error: %s', err),
         () => showForwardList());
-
 }
 
 function addForward() {
-    let listenPort = document.getElementById("listen-port").value;
+    let ip = getIP();
+    let port = getPort();
+    if (!ip || !port) {
+        return
+    }
+    let command = ["ADD", port.listenPort, ip.listenAddress, port.connectPort, ip.connectAddress];
+    cleanForwardList();
+    showSnackBar(ip.listenAddress + " : " + port.listenPort + " > " + ip.connectAddress + " : " + port.connectPort);
+    runPortManShell(command)
+        .subscribe((data) => addForwardList(data),
+            (err) => console.log('Error: %s', err),
+            () => showForwardList())
+}
+
+function getIP() {
+    const ipAddrRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     let listenAddress = document.getElementById("listen-address").value;
-    let connectPort = document.getElementById("connect-port").value;
     let connectAddress = document.getElementById("connect-address").value;
     if (listenAddress === "") listenAddress = "0.0.0.0";
     if (connectAddress === "") connectAddress = "127.0.0.1";
+
+    if (!listenAddress.match(ipAddrRegex)) {
+        showSnackBar("Check the Listen IP Address");
+        return
+    }
+    if (!connectAddress.match(ipAddrRegex)) {
+        showSnackBar("Check the Connect IP Address");
+        return
+    }
+    return {listenAddress, connectAddress}
+}
+
+function getPort() {
+    let listenPort = document.getElementById("listen-port").value;
+    let connectPort = document.getElementById("connect-port").value;
     if (listenPort === "" || connectPort === "") {
         showSnackBar("We Need To IP & Port");
         return
@@ -33,23 +61,7 @@ function addForward() {
         showSnackBar("Check the Connect Port");
         return
     }
-    if (!listenAddress.match(ipAddrRegex)) {
-        showSnackBar("Check the Listen IP Address");
-        return
-    }
-    if (!connectAddress.match(ipAddrRegex)) {
-        showSnackBar("Check the Connect IP Address");
-        return
-    }
-
-    let command = ["ADD", listenPort, listenAddress, connectPort, connectAddress];
-
-    cleanForwardList();
-    showSnackBar(listenAddress + " : " + listenPort + " > " + connectAddress + " : " + connectPort);
-    runPortManShell(command)
-        .subscribe((data) => addForwardList(data),
-            (err) => console.log('Error: %s', err),
-            () => showForwardList())
+    return {listenPort, connectPort}
 }
 
 function delForward(address, port) {
