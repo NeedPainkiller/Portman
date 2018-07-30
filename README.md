@@ -1,7 +1,7 @@
 
 <div align="center">
 
-<img align="center" width="100%" src="/res/img/portman1.PNG" alt="PortMan">
+<img align="center" width="100%" src="/res/img/PortMan.gif" alt="PortMan">
 
 <br>
 <br>
