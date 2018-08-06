@@ -4,6 +4,9 @@
 const shell = require('child_process');
 const Rx = require('./rx')
 
+// const DEV_MODE = true
+const PRODUCTION_MODE = (process.env['NODE_ENV'] === 'production')
+
 function refresh() {
     cleanForwardList();
     showSnackBar("Wait a Second ...", 1500);
@@ -16,9 +19,8 @@ function refresh() {
 function addForward() {
     let ip = getIP();
     let port = getPort();
-    if (!ip || !port) {
-        return
-    }
+    if (!ip || !port) return;
+
     let command = ["ADD", port.listenPort, ip.listenAddress, port.connectPort, ip.connectAddress];
     cleanForwardList();
     showSnackBar(ip.listenAddress + " : " + port.listenPort + " > " + ip.connectAddress + " : " + port.connectPort);
@@ -30,10 +32,8 @@ function addForward() {
 
 function getIP() {
     const ipAddrRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
-    let listenAddress = document.getElementById("listen-address").value;
-    let connectAddress = document.getElementById("connect-address").value;
-    if (listenAddress === "") listenAddress = "0.0.0.0";
-    if (connectAddress === "") connectAddress = "127.0.0.1";
+    let listenAddress = document.getElementById("listen-address").value || "0.0.0.0";
+    let connectAddress = document.getElementById("connect-address").value || "127.0.0.1";
 
     if (!listenAddress.match(ipAddrRegex)) {
         showSnackBar("Check the Listen IP Address");
@@ -75,10 +75,10 @@ function delForward(address, port) {
 }
 
 function runPortManShell(command) {
+    let commandPath = PRODUCTION_MODE ? "resources/app/res/portmanshell.exe" : "res/portmanshell.exe";
     return Rx.Observable
         .fromPromise(new Promise((resolve, reject) => {
-            // shell.spawn('res/portmanshell.exe', command) // in dev environment
-            shell.spawn('resources/app/res/portmanshell.exe', command)
+            shell.spawn(commandPath, command)
                 .stdout.on('data', (data) => resolve(data.toString()))
         }))
         .map(stdout => stdout.split('\\n').splice(5))
@@ -125,7 +125,7 @@ function showForwardList() {
     let ul = document.getElementById("list");
     ul.classList.remove("active");
     let items = Array.from(ul.querySelectorAll("li"));
-    items.forEach((li, index) => setTimeout(() => li.style.opacity = 1, (index + 1) + 300)
+    items.forEach((li, index) => setTimeout(() => li.style.opacity = 1, (index * 200) + 10)
     )
 }
 

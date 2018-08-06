@@ -87,3 +87,5 @@ const menu = Menu.buildFromTemplate([
     }
 ])
 Menu.setApplicationMenu(menu)
+
+process.env['NODE_ENV'] = 'production';

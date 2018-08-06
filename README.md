@@ -23,15 +23,32 @@ PortMan 은 간단한 포트포워딩 관리를 위한 Windows 10 전용 프로�
 </p>
 
 ## Getting Started
+main.js
+```javascript
+...
+process.env['NODE_ENV'] = 'development';
+```
 
+shell
 ```shell
 npm run start
 ```
 
 ## Build
+
+main.js
+```javascript
+...
+process.env['NODE_ENV'] = 'production';
+```
+
+shell
 ```shell
 npm run build
 ```
+
+## Download
+[Google Drive](https://drive.google.com/file/d/1Bce5CwR0BgDG1Fwk0Sva4cg0cMIFenj3/view?usp=sharing)
 
 ## Use Library
 [electron](https://electronjs.org/)
