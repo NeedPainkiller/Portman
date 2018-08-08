@@ -125,7 +125,7 @@ function showForwardList() {
     let ul = document.getElementById("list");
     ul.classList.remove("active");
     let items = Array.from(ul.querySelectorAll("li"));
-    items.forEach((li, index) => setTimeout(() => li.style.opacity = 1, (index * 200) + 10)
+    items.forEach((li, index) => setTimeout(() => li.style.opacity = 1, (index * 100) + 10)
     )
 }
 
@@ -140,13 +140,21 @@ function cleanForwardList() {
 }
 
 function loaderFadeIn() {
-    document.getElementById("loader").style.opacity = 1;
+    let loader = document.getElementById("loader")
+    setTimeout(() => {
+        loader.style.opacity = 1;
+        loader.style.visibility = "visible";
+    }, 500)
     document.getElementById("none").style.opacity = 0;
     document.getElementsByTagName("body")[0].style.pointerEvents = "none"
 }
 
 function loaderFadeOut() {
-    document.getElementById("loader").style.opacity = 0;
+    let loader = document.getElementById("loader")
+    setTimeout(() => {
+        loader.style.opacity = 0;
+        loader.style.visibility = "hidden";
+    }, 500)
     document.getElementsByTagName("body")[0].style.pointerEvents = "auto";
 
     if (document.getElementById("list").getElementsByTagName("li").length === 0) {
